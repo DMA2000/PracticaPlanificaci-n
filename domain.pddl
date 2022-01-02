@@ -1,29 +1,36 @@
-(define (domain hotel-booking)
-  (   :requirements 
+(define (domain hotel)
+  (:requirements 
       :adl 
       :typing
+      :fluents
+      :strips
   )
-  (:types habitacion reserva capicidad dias  - object
-          )           
+  (:types 
+      habitacion reserva dias  - object
+  )
+  (:functions 
+      (capacityH ?h - habitacion)
+      (capacityR ?r - reserva)
+      (init-day ?r - reserva)
+      (end-day ?r - reserva)
+      (get-value ?d - dias)
+  )
   (:predicates
-   (info_reserva ?r - reserva ?di ?df - dias ?c -capacidad)
-   (reservado ?r - reserva ?h - habitacion) ;; asignacion de reserva
-   (capacidad ?c - capacidad ?h - habitacion)
-   (ocupado ?h - habitacion ?di - dias) ;; explicar tesitura de espacio vs tiempo (ocupado vs libre)
-   
+      (reservado ?r - reserva) ;; asignacion de reserva
+      (ocupado ?h - habitacion ?d - dias) ;; explicar tesitura de espacio vs tiempo (ocupado vs libre)
   )  
   (:action reservar_habitacion
-    :parameters (?h - habitacion ?r - reserva ?di ?df - dias ?c - capacidad ?ch - capacidad)
-    :precondition (and (not (exists (reservado ?r ?h1) ) ) 
-                            (<= ?c ?ch)
-                            (forall ( ?d - dias) (and ( >= ?d ?di) (<= ?d ?df) (not (ocupado ?h ?d)) ) )
-                            )
+    :parameters (?h - habitacion ?r - reserva)
+    :precondition (and (not(reservado ?r)) 
+                            (<= (capacityH ?h) (capacityR ?r))
+                            (forall (?d - dias) (and (>= (get-value ?d) (init-day ?r)) (<= (get-value ?d) (end-day ?r)) (not (ocupado ?h ?d))))
+                  )
     :effect (and 
-                (forall ( ?d - dias)
-                    (when(and( >= ?d ?di)(<= ?d ?df)) 
+                (forall (?d - dias)
+                    (when(and(>= (get-value ?d) (init-day ?r)) (<= (get-value ?d) (end-day ?r))) 
                         (ocupado ?h ?d))
                 )
-                (reservado ?r ?h)
+                (reservado ?r)
             )
    )
 )
