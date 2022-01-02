@@ -22,8 +22,8 @@
   (:action reservar_habitacion
     :parameters (?h - habitacion ?r - reserva)
     :precondition (and (not(reservado ?r)) 
-                            (<= (capacityH ?h) (capacityR ?r))
-                            (forall (?d - dias) (and (>= (get-value ?d) (init-day ?r)) (<= (get-value ?d) (end-day ?r)) (not (ocupado ?h ?d))))
+                     (>= (capacityH ?h) (capacityR ?r))
+                     (forall (?d - dias) (imply (and (>= (get-value ?d) (init-day ?r)) (<= (get-value ?d) (end-day ?r))) (not (ocupado ?h ?d))))
                   )
     :effect (and 
                 (forall (?d - dias)

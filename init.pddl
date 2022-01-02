@@ -3,7 +3,7 @@
    (:objects 
    d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 - dias
    A01 - habitacion
-   R01 - reserva
+   R01 R02 - reserva
    )
 
 
@@ -12,8 +12,14 @@
   
   (= (init-day R01) 1)
   (= (end-day R01) 2)
-  (= (capacityH A01) 4)
+  
+  (= (init-day R02) 3)
+  (= (end-day R02) 10)
+  
+  (= (capacityH A01) 3)
+  
   (= (capacityR R01) 3)
+  (= (capacityR R02) 3)
 )
 
 
