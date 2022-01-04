@@ -35,7 +35,7 @@ public class Generador {
         for (Dia d: dias) content += ("(= (get-value " + d.name + ") " + d.value + ")");
         content += "\n";
         content += "\n";
-        content += "(= (total-cost) 0)\n";
+        if(extension != 0) content += "(= (total-cost) 0)\n";
         content += "\n";
 
 
@@ -89,7 +89,7 @@ public class Generador {
 
     private void generarDias() {
         System.out.println("Generando dias...");
-
+        dias.clear();
         for (int i = 1; i <= 30; ++i) {
             Dia d = new Dia(i);
             dias.add(d);
@@ -110,7 +110,6 @@ public class Generador {
             Habitacion h = new Habitacion(i);
             habitaciones.add(h);
         }
-
         System.out.println("Fin de la generación de habitaciones");
 
     }
@@ -131,10 +130,45 @@ public class Generador {
 
     }
 
-    public String generate(String nombreJp, String nombreDominio, int extension) {
-        /*Extension 0 - goal diferente y no tiene orientacion y preferencias */
-        /*Extension 1 y 3 y 4- no tiene orientacion y preferencias */
+    private void generarHabitacionesAleatorio(int k) {
+        habitaciones.clear();
+        for (int i = 1; i <= k; ++i) {
+            Habitacion h = new Habitacion(i);
+            habitaciones.add(h);
+        }
+    }
 
+    private void generarReservasAleatorio(int k) {
+        reservas.clear();
+        for (int i = 1; i <= k; ++i) {
+            Reserva r = new Reserva(i);
+            reservas.add(r);
+        }
+    }
+
+    public String generate(String nombreJp, String nombreDominio, int extension, int it) {
+        this.extension = extension;
+
+        generarDias();
+        generarHabitacionesAleatorio(it);
+        generarReservasAleatorio(it*2);
+
+
+        String defineModule = generarDefineModule(nombreJp, nombreDominio);
+        String initModule = generarInitModule();
+        String goalModule = "";
+
+        if (extension == 0) goalModule = generarBasicGoalModule();
+        else goalModule = generarGoalModule();
+        String metricModule = "";
+        if (extension != 0) metricModule = generarMetricModule();
+        String contenido = defineModule + initModule + goalModule + metricModule;
+        contenido += ")\n";
+
+        return contenido;
+    }
+
+    public String generate(String nombreJp, String nombreDominio, int extension) {
         this.extension = extension;
 
         generarDias();
