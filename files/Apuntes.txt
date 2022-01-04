@@ -53,10 +53,6 @@ Que se puede poner en los efectos:
 	- Efectos cuantificados univeralmente (forall) (adl)
 
 
-
-
-
-
 2. Problema
 	- :domain, dominio del problema
 	- :objects, constantes del problema
