@@ -1,104 +1,159 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import com.sun.source.tree.ReturnTree;
+
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Generador {
 
-    private static Scanner sc = new Scanner(System.in);
+    public Integer extension;
+    public Scanner sc = new Scanner(System.in);
+    public ArrayList<Dia> dias = new ArrayList<>();
+    public ArrayList<Habitacion> habitaciones = new ArrayList<>();
+    public ArrayList<Reserva> reservas =  new ArrayList<>();
 
-    private static String generarDefineModule(String nombreProblema, String nombreDominio, int numeroTipos) {
+
+    private String generarDefineModule(String nombreProblema, String nombreDominio) {
 
         String content = "(define (problem " + nombreProblema + ")\n";
         content += "(:domain " + nombreDominio + ")\n";
         content += "(:objects \n";
-
-
-        for (int i = 1; i <= numeroTipos; ++i ) {
-            System.out.println("Introduce el nombre del tipo #" + i);
-            String nombreTipo = sc.next();
-            System.out.println("Cuantos objetos quieres instanciar del tipo: " + nombreTipo);
-            int numeroObjetosTipo = sc.nextInt();
-            System.out.println("A continuación introduce los objetos de tipo: " + nombreTipo);
-            for (int j = 0; j < numeroObjetosTipo; ++j) {
-                System.out.println("Faltan " + (numeroObjetosTipo-j) + " objetos del tipo " + nombreTipo);
-                content += sc.next() + " ";
-            }
-            content += "- " + nombreTipo + "\n";
-        }
+        for (Dia d: dias) content += (d.name + " ");
+        content += "- dias\n";
+        for (Habitacion h: habitaciones) content += (h.name + " ");
+        content += "- habitacion\n";
+        for (Reserva r: reservas) content += (r.name + " ");
+        content += "- reserva\n";
         content += ")\n";
+        content += "\n";
         return content;
     }
 
-    private static String generarInitModule() {
+    private String generarInitModule() {
         String content = "(:init\n";
 
-        System.out.println("Introduce el numero de predicados que quieres definir");
-        int nPredicados = sc.nextInt();
-        for (int i = 0; i < nPredicados; ++i) {
-            System.out.println("Introduce el nombre del predicado");
-            String nombrePredicado = sc.next();
-            System.out.println("¿Cuantos predicados del tipo: " + nombrePredicado + " quieres introducir?");
-            int nPredicadoInd = sc.nextInt();
-            sc.nextLine();
-            for (int j = 0; j < nPredicadoInd; ++j) {
-                System.out.print("Faltan " + (nPredicadoInd-j) + " predicados\n");
-                String predicado = sc.nextLine();
-                content += predicado;
-                content += " ";
-            }
+        for (Dia d: dias) content += ("(= (get-value " + d.name + ") " + d.value + ")");
+        content += "\n";
+        content += "\n";
+        content += "(= (total-cost) 0)\n";
+        content += "\n";
+
+
+        for (Reserva r: reservas) {
+            int startDay = ThreadLocalRandom.current().nextInt(1, 31);
+            int endDay = ThreadLocalRandom.current().nextInt(startDay, 31);
+            int capacityR = ThreadLocalRandom.current().nextInt(1, 5);
+            int preferenciaR = ThreadLocalRandom.current().nextInt(1, 5)*10;
+            content += ("(= (init-day " + r.name + ") " + startDay + ")\n");
+            content += ("(= (end-day " + r.name + ") " + endDay + ")\n");
+            content += ("(= (capacityR " + r.name + ") " + capacityR + ")\n");
+            if (extension == 2) content += ("(= (get-preferencia " + r.name + ") " + preferenciaR + ")\n");
+            content += "\n";
+
+        }
+        content += "\n";
+        for (Habitacion h: habitaciones) {
+            int capacityH = ThreadLocalRandom.current().nextInt(1, 5);
+            int preferenciaH = ThreadLocalRandom.current().nextInt(1, 5)*10;
+            content += ("(= (capacityH " + h.name + ") " + capacityH + ")\n");
+            if (extension == 2) content += ("(= (get-orientacion " + h.name + ") " + preferenciaH + ")\n");
             content += "\n";
         }
-        content += ")\n";
-        return content;
-    }
 
-    private static String generarGoalModule() {
-        sc.nextLine();
-        String content = "(:goal ";
-        System.out.println("Introduce el objetivo del problema");
-        content += sc.nextLine();
         content += ")\n";
+        content += "\n";
 
         return content;
     }
 
+    private String generarGoalModule() {
+        System.out.println("Generando goal ...");
+        String content = "(:goal (forall (?r - reserva) (or (reservado ?r) (incompatible ?r))))\n";
+        content += "\n";
+        return content;
+    }
+    private String generarBasicGoalModule() {
+        System.out.println("Generando goal ...");
+        String content = "(:goal (forall (?r - reserva) (reservado ?r)))\n";
+        content += "\n";
+        return content;
+    }
 
-    public static void main(String ars[]){
+    private String generarMetricModule() {
+        System.out.println("Generando metric ...");
+        String content = "(:metric minimize (total-cost))\n";
+        content += "\n";
+        return content;
+    }
 
-        try {
-            System.out.println("Bienvenidos al generador de juegos de prueba!");
-            System.out.println("Introduce el nombre del juego de prueba que quieras generar!");
-            String nombreJp = sc.next();
-            String ruta = "JP/" + nombreJp + ".pddl";
-            System.out.println("Introduce el nombre del problema");
-            String nombreProblema = sc.next();
-            System.out.println("Introduce el nombre del dominio");
-            String nombreDominio = sc.next();
-            System.out.println("¿Cuantos tipos de objetos quieres definir?");
-            int numeroTipos = sc.nextInt();
 
-            String defineModule = generarDefineModule(nombreProblema, nombreDominio, numeroTipos);
-            String initModule = generarInitModule();
-            String goalModule = generarGoalModule();
-            String contenido = defineModule + initModule + goalModule;
+    private void generarDias() {
+        System.out.println("Generando dias...");
 
-            File file = new File(ruta);
-            // Si el archivo no existe es creado
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(contenido);
-            bw.close();
-            System.out.println("Gracias por utilizar nuestro generador");
-        } catch (Exception e) {
-            System.out.println("Algo fue mal...");
-            e.printStackTrace();
+        for (int i = 1; i <= 30; ++i) {
+            Dia d = new Dia(i);
+            dias.add(d);
         }
+
+        System.out.println("Fin de la generación de dias");
     }
 
+    private void generarHabitaciones() {
+        System.out.println("¿Cuantas habitaciones quieres generar?");
+        int numHab = sc.nextInt();
+        while (numHab <= 0) {
+            System.out.println("Se tiene que generar mínimo una habitación");
+            numHab = sc.nextInt();
+        }
+        System.out.println("Se van a generar " + numHab + " habitaciones");
+        for (int i = 1; i <= numHab; ++i) {
+            Habitacion h = new Habitacion(i);
+            habitaciones.add(h);
+        }
 
+        System.out.println("Fin de la generación de habitaciones");
+
+    }
+
+    private void generarReservas() {
+        System.out.println("¿Cuantas reservas quieres generar?");
+        int numR = sc.nextInt();
+        while (numR <= 0) {
+            System.out.println("Se tiene que generar mínimo una reserva");
+            numR = sc.nextInt();
+        }
+        System.out.println("Se van a generar " + numR + " reservas");
+        for (int i = 1; i <= numR; ++i) {
+            Reserva r = new Reserva(i);
+            reservas.add(r);
+        }
+        System.out.println("Fin de la generación de reservas");
+
+    }
+
+    public String generate(String nombreJp, String nombreDominio, int extension) {
+        /*Extension 0 - goal diferente y no tiene orientacion y preferencias */
+        /*Extension 1 y 3 y 4- no tiene orientacion y preferencias */
+
+        this.extension = extension;
+
+        generarDias();
+        generarHabitaciones();
+        generarReservas();
+
+
+        String defineModule = generarDefineModule(nombreJp, nombreDominio);
+        String initModule = generarInitModule();
+        String goalModule = "";
+
+        if (extension == 0) goalModule = generarBasicGoalModule();
+        else goalModule = generarGoalModule();
+        String metricModule = "";
+        if (extension != 0) metricModule = generarMetricModule();
+        String contenido = defineModule + initModule + goalModule + metricModule;
+        contenido += ")\n";
+
+        return contenido;
+    }
 
 }
