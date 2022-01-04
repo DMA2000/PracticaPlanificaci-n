@@ -35,7 +35,7 @@
                 )
                 (reservado ?r)
                 (increase (total-cost) (- (capacityH ?h) (capacityR ?r)))
-                (when (not(asignada ?h)) (and(increase (total-cost) -1)(asignada ?h)))
+                (when (not(asignada ?h)) (and(increase (total-cost) 0.5) (asignada ?h)))
             )
    )
    (:action descarte-reserva
