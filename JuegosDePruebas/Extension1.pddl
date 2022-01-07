@@ -2,7 +2,7 @@
 (:domain hotel)
 (:objects 
 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 - dias
-A01 A02 - habitacion
+A01 A02 A03 A04 A05 - habitacion
 R01 R02 R03 R04 R05 R06 - reserva
 )
 
@@ -11,34 +11,40 @@ R01 R02 R03 R04 R05 R06 - reserva
 
 (= (total-cost) 0)
 
-(= (init-day R01) 30)
-(= (end-day R01) 30)
+(= (init-day R01) 3)
+(= (end-day R01) 13)
 (= (capacityR R01) 3)
 
-(= (init-day R02) 26)
-(= (end-day R02) 28)
-(= (capacityR R02) 1)
+(= (init-day R02) 18)
+(= (end-day R02) 22)
+(= (capacityR R02) 3)
 
-(= (init-day R03) 29)
-(= (end-day R03) 29)
-(= (capacityR R03) 2)
+(= (init-day R03) 24)
+(= (end-day R03) 27)
+(= (capacityR R03) 4)
 
-(= (init-day R04) 28)
-(= (end-day R04) 28)
-(= (capacityR R04) 3)
+(= (init-day R04) 8)
+(= (end-day R04) 10)
+(= (capacityR R04) 2)
 
-(= (init-day R05) 14)
-(= (end-day R05) 30)
-(= (capacityR R05) 3)
+(= (init-day R05) 10)
+(= (end-day R05) 10)
+(= (capacityR R05) 4)
 
-(= (init-day R06) 15)
-(= (end-day R06) 28)
-(= (capacityR R06) 1)
+(= (init-day R06) 24)
+(= (end-day R06) 24)
+(= (capacityR R06) 3)
 
 
 (= (capacityH A01) 1)
 
 (= (capacityH A02) 3)
+
+(= (capacityH A03) 4)
+
+(= (capacityH A04) 2)
+
+(= (capacityH A05) 1)
 
 )
 
