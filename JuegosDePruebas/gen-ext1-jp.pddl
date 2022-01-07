@@ -1,9 +1,9 @@
-(define (problem testing_base)
+(define (problem gen-ext1-jp)
 (:domain hotel)
 (:objects 
 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 - dias
-A01 A02 A03 A04 A05 A06 A07 A08 A09 A10 - habitacion
-R01 R02 R03 R04 R05 - reserva
+A01 A02 A03 - habitacion
+R01 R02 R03 R04 R05 R06 - reserva
 )
 
 (:init
@@ -11,49 +11,41 @@ R01 R02 R03 R04 R05 - reserva
 
 (= (total-cost) 0)
 
-(= (init-day R01) 16)
-(= (end-day R01) 16)
+(= (init-day R01) 7)
+(= (end-day R01) 20)
 (= (capacityR R01) 2)
 
-(= (init-day R02) 24)
-(= (end-day R02) 24)
-(= (capacityR R02) 3)
+(= (init-day R02) 10)
+(= (end-day R02) 25)
+(= (capacityR R02) 4)
 
-(= (init-day R03) 26)
-(= (end-day R03) 28)
+(= (init-day R03) 20)
+(= (end-day R03) 22)
 (= (capacityR R03) 3)
 
-(= (init-day R04) 22)
-(= (end-day R04) 26)
-(= (capacityR R04) 4)
+(= (init-day R04) 21)
+(= (end-day R04) 30)
+(= (capacityR R04) 3)
 
-(= (init-day R05) 15)
-(= (end-day R05) 18)
-(= (capacityR R05) 1)
+(= (init-day R05) 9)
+(= (end-day R05) 20)
+(= (capacityR R05) 4)
+
+(= (init-day R06) 9)
+(= (end-day R06) 11)
+(= (capacityR R06) 3)
 
 
-(= (capacityR A01) 4)
+(= (capacityH A01) 4)
 
-(= (capacityR A02) 1)
+(= (capacityH A02) 4)
 
-(= (capacityR A03) 1)
-
-(= (capacityR A04) 3)
-
-(= (capacityR A05) 2)
-
-(= (capacityR A06) 2)
-
-(= (capacityR A07) 3)
-
-(= (capacityR A08) 2)
-
-(= (capacityR A09) 1)
-
-(= (capacityR A10) 4)
+(= (capacityH A03) 4)
 
 )
 
-(:goal (forall (?r - reserva) (reservado ?r)))
+(:goal (forall (?r - reserva) (or (reservado ?r) (incompatible ?r))))
+
+(:metric minimize (total-cost))
 
 )
