@@ -13,19 +13,19 @@ R01 R02 R03 R04 R05 R06 - reserva
 
 (= (init-day R01) 3)
 (= (end-day R01) 13)
-(= (capacityR R01) 3)
+(= (capacityR R01) 4)
 
 (= (init-day R02) 18)
 (= (end-day R02) 22)
-(= (capacityR R02) 3)
+(= (capacityR R02) 4)
 
 (= (init-day R03) 24)
 (= (end-day R03) 27)
-(= (capacityR R03) 4)
+(= (capacityR R03) 3)
 
 (= (init-day R04) 8)
 (= (end-day R04) 10)
-(= (capacityR R04) 2)
+(= (capacityR R04) 4)
 
 (= (init-day R05) 10)
 (= (end-day R05) 10)
@@ -38,9 +38,9 @@ R01 R02 R03 R04 R05 R06 - reserva
 
 (= (capacityH A01) 1)
 
-(= (capacityH A02) 3)
+(= (capacityH A02) 2)
 
-(= (capacityH A03) 4)
+(= (capacityH A03) 2)
 
 (= (capacityH A04) 2)
 
