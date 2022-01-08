@@ -40,11 +40,11 @@ R01 R02 R03 R04 R05 R06 R07 - reserva
 (= (capacityR R07) 2)
 
 
-(= (capacityH A01) 4)
+(= (capacityH A01) 3)
 
 (= (capacityH A02) 1)
 
-(= (capacityH A03) 2)
+(= (capacityH A03) 3)
 
 )
 
