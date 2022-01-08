@@ -11,40 +11,40 @@ R01 R02 R03 R04 R05 - reserva
 
 (= (total-cost) 0)
 
-(= (init-day R01) 1)
-(= (end-day R01) 5)
-(= (capacityR R01) 4)
+(= (init-day R01) 14)
+(= (end-day R01) 26)
+(= (capacityR R01) 2)
 (= (get-preferencia R01) 10)
 
-(= (init-day R02) 25)
-(= (end-day R02) 29)
-(= (capacityR R02) 2)
-(= (get-preferencia R02) 20)
+(= (init-day R02) 7)
+(= (end-day R02) 30)
+(= (capacityR R02) 1)
+(= (get-preferencia R02) 10)
 
-(= (init-day R03) 13)
-(= (end-day R03) 29)
-(= (capacityR R03) 1)
-(= (get-preferencia R03) 10)
+(= (init-day R03) 8)
+(= (end-day R03) 10)
+(= (capacityR R03) 4)
+(= (get-preferencia R03) 40)
 
-(= (init-day R04) 24)
-(= (end-day R04) 24)
+(= (init-day R04) 16)
+(= (end-day R04) 18)
 (= (capacityR R04) 4)
 (= (get-preferencia R04) 40)
 
-(= (init-day R05) 20)
-(= (end-day R05) 26)
-(= (capacityR R05) 3)
-(= (get-preferencia R05) 30)
+(= (init-day R05) 2)
+(= (end-day R05) 12)
+(= (capacityR R05) 1)
+(= (get-preferencia R05) 20)
 
 
-(= (capacityH A01) 1)
-(= (get-orientacion A01) 20)
+(= (capacityH A01) 2)
+(= (get-orientacion A01) 40)
 
-(= (capacityH A02) 2)
+(= (capacityH A02) 1)
 (= (get-orientacion A02) 20)
 
-(= (capacityH A03) 2)
-(= (get-orientacion A03) 10)
+(= (capacityH A03) 1)
+(= (get-orientacion A03) 30)
 
 )
 
